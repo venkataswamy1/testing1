@@ -1,0 +1,2899 @@
+<app name="Youtube">
+	<appgroups>
+		<appgroup name="Google App"/>
+	</appgroups>
+	<ui>
+		<name>Youtube</name>
+		<description>
+        Youtube
+		</description>
+	</ui>
+	<id>
+		<and>
+			<match mtype="strstr" field="uripath" rhs="/plus/v1whitelisted/" />
+			<match mtype="dns" field="host" rhs="googleapis\.com"/>
+		</and>  
+		<and>
+			<match mtype="strstr" field="uripath" rhs="/youtubei/" />
+			<match mtype="dns" field="host" rhs="googleapis\.com"/>
+		</and>      
+		<match field="host" mtype="dns" rhs="youtube\.com" />
+		<match field="host" mtype="dns" rhs="m\.youtube\.com" />	
+	</id>
+	<vars>
+		<var name="object_type" scope="flow-context" vtype="string">
+			<ui>
+				<name>object Type</name>
+				<description>object Type</description>
+			</ui>
+		</var>
+		<var name="instance_id" scope="flow-context" vtype="string">
+			<ui>
+				<name>Instance Id</name>
+				<description>instance id</description>
+			</ui>
+		</var>
+
+		<var name="tmp_instance_id" scope="flow-context" vtype="string">
+			<ui>
+				<name>tmp Instance Id</name>
+				<description>tmp instance id</description>
+			</ui>
+		</var>
+		<var name="object" scope="flow-context" vtype="string">
+			<ui>
+				<name>object</name>
+				<description>object</description>
+			</ui>
+		</var>
+		<var name="object_id" scope="flow-context" vtype="string">
+			<ui>
+				<name>object_id</name>
+				<description>object id</description>
+			</ui>
+		</var> 
+
+
+		<var name="from_object" scope="flow-context" vtype="string">
+			<ui>
+				<name>From object</name>
+				<description>From object</description>
+			</ui>
+		</var>
+		<var name="to_object" scope="flow-context" vtype="string">
+			<ui>
+				<name>To object</name>
+				<description>To object.</description>
+			</ui>
+		</var>
+		<var name="user_tmp" scope="flow-context" vtype="string">
+			<ui>
+				<name>user_tmp</name>
+				<description>
+                user_tmp
+				</description>
+			</ui>
+		</var>
+		<var name="from_user" scope="app-session" vtype="string">
+			<ui>
+				<name>From User</name>
+				<description>From User</description>
+			</ui>
+		</var>
+		<var name="tag" scope="flow-context" vtype="string">
+			<ui>
+				<name>tag</name>
+				<description>TAG in video</description>
+			</ui>
+		</var>    
+		<var name="to_user" scope="flow-context" vtype="string">
+			<ui>
+				<name>To User</name>
+				<description>To User.</description>
+			</ui>
+		</var>
+
+		<var name="temp2" scope="flow-context" vtype="string">
+			<ui>
+				<name>temp2</name>
+				<description>temp2</description>
+			</ui>
+		</var>    
+
+		<var name="tmp" scope="flow-context" vtype="int">
+			<ui>
+				<name>tmp</name>
+				<description>tempvariable.</description>
+			</ui>
+		</var>
+
+		<var name="tmpobj" scope="app-session" vtype="string">
+			<ui>
+				<name>Temp Variable</name>
+				<description>
+                Temp Variable
+				</description>
+			</ui>
+		</var>
+		<var name="tmpobjid" scope="app-session" vtype="string">
+			<ui>
+				<name>Temp Variable</name>
+				<description>
+                Temp Variable
+				</description>
+			</ui>
+		</var>     
+
+		<var name="temp1" scope="flow-context" vtype="int">
+			<ui>
+				<name>temp1</name>
+				<description>tempvariable1.</description>
+			</ui>
+		</var>  
+
+		<var name="upload_dlp_content_length" scope="flow-context" vtype="string">
+			<ui>
+				<name>Forbidden Status</name>
+				<description>
+         Forbidden Status
+				</description>
+			</ui>
+		</var>
+
+		<var name="content_length" scope="flow-context" vtype="int">
+			<ui>
+				<name>Forbidden Status</name>
+				<description>
+         Forbidden Status
+				</description>
+			</ui>
+		</var>
+
+		<var name="upload_dlp_file_size" scope="app-session" vtype="string">
+			<ui>
+				<name>Forbidden Status</name>
+				<description>
+         Forbidden Status
+				</description>
+			</ui>
+		</var>
+
+		<var name="size" scope="flow-context" vtype="string">
+			<ui>
+				<name>Forbidden Status</name>
+				<description>
+         Forbidden Status
+				</description>
+			</ui>
+		</var>   
+
+		<var name="temp" scope="flow-context" vtype="int">
+			<ui>
+				<name>temp</name>
+				<description>temp variable.</description>
+			</ui>
+		</var>
+		<var name="temp3" scope="flow-context" vtype="string">
+			<ui>
+				<name>temp</name>
+				<description>temp variable.</description>
+			</ui>
+		</var>    
+		<var name="temp4" scope="flow-context" vtype="string">
+			<ui>
+				<name>temp</name>
+				<description>temp variable.</description>
+			</ui>
+		</var>  
+		<var name="videoComment" scope="flow-context" vtype="cibuffer">
+			<ui>
+				<name>videoComment</name>
+				<description>videoComment</description>
+			</ui>
+		</var>	
+	</vars>
+
+	<triggers>
+		<trigger log="y" name="Login Successful">
+			<external>
+				<action name="nspolicy" />
+			</external>
+			<ui>
+				<name>Successfully Login</name>
+				<description>Successful direct user login to the website.</description>
+			</ui>
+		</trigger>
+
+		<trigger log="y" name="Login Failed">
+			<external>
+				<action name="nspolicy" />
+			</external>
+			<ui>
+				<name>Login Attempt Failed</name>
+				<description>Direct user login to the website failed.</description>
+			</ui>
+		</trigger>
+
+		<trigger log="y" name="Login Attempt">
+			<ui>
+				<name>Login Attempt </name>
+				<description>
+         Direct user login attempt
+				</description>
+			</ui>
+			<external>
+				<action name="nspolicy" />
+			</external>
+		</trigger>    
+
+		<trigger log="y" name="Upload">
+			<ui>
+				<name>Upload</name>
+				<description>
+         Direct user upload attempt
+				</description>
+			</ui>
+			<external>
+				<action name="nspolicy" />
+			</external>
+		</trigger>        
+
+		<trigger log="y" name="Download">
+			<ui>
+				<name>Download</name>
+				<description>Download or Sync a file or folder.</description>
+			</ui>
+			<external>
+				<action name="nspolicy" />
+			</external>
+		</trigger>    
+
+
+		<trigger log="y" name="Delete">
+			<external>
+				<action name="nspolicy" />
+			</external>
+			<ui>
+				<name>Delete Folder</name>
+				<description>to delete a folder</description>
+			</ui>
+		</trigger>    
+
+		<trigger log="y" name="Join">
+			<external>
+				<action name="nspolicy" />
+			</external>
+			<ui>
+				<name>Join</name>
+				<description>Join a group</description>
+			</ui>
+		</trigger>        
+
+		<trigger log="y" name="Edit">
+			<external>
+				<action name="nspolicy" />
+			</external>
+			<ui>
+				<name>Rename File or Folder</name>
+				<description>
+          to rename a folder.
+				</description>
+			</ui>
+		</trigger>   
+
+		<trigger log="y" name="Dummy">
+			<ui>
+				<name> </name>
+				<description>
+          Dummy
+				</description>
+			</ui>
+		</trigger>
+
+
+		<trigger log="y" name="Share">
+			<external>
+				<action name="nspolicy" />
+			</external>
+			<ui>
+				<name>Share</name>
+				<description>Share a file with another email id</description>
+			</ui>
+		</trigger>
+
+		<trigger log="y" name="Post">
+			<external>
+				<action name="nspolicy" />
+			</external>
+			<ui>
+				<name>Post</name>
+				<description>Publish a video</description>
+			</ui>
+		</trigger>      
+
+		<trigger log="y" name="View">
+			<external>
+				<action name="nspolicy" />
+			</external>
+			<ui>
+				<name>View Folder</name>
+				<description>to view a folder</description>
+			</ui>
+		</trigger>    
+
+		<trigger log="y" name="View All">
+			<external>
+				<action name="nspolicy" />
+			</external>
+			<ui>
+				<name>View All Sites</name>
+				<description>to view all Sites</description>
+			</ui>
+		</trigger>      
+	</triggers>
+
+	<resource name="from_user_extract" path="/">
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="0" />
+		</id>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="TEXT" parsertype="stream"/>
+			</info>
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" />
+					<match mtype="decode-key" field="resp-body" >
+						<key name="yt-masthead-picker-name" order="1" />			
+					</match>   
+				</and>	
+				<assign type="decode-key-value" lhs="from_user" startswith="0x3E" endswith="0x3C" field="resp-body" />		
+				<assign lhs="user_tmp" order="12" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="13" endprocessing="y">
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="update" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>                
+				<assign order="14" type="value" lhs="temp3" rhs=" "/>
+				<assign order="15" type="value" lhs="temp4" rhs=" "/>
+			</actions>	
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" />
+					<match mtype="decode-key" field="resp-body" >
+						<key name="signed_in_username&quot;&#58;" order="1" />  
+					</match>   
+				</and>	
+				<assign type="decode-key-value" lhs="from_user" startswith="0x22" endswith="0x22" field="resp-body" />
+				<assign lhs="user_tmp" order="5" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="6" endprocessing="y">
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="update" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>                
+			</actions>
+		</response>
+	</resource>
+
+	<!-- Upload a video-->    
+	<resource name="upload_video" path="/upload/rupio" >
+		<init>
+			<assign order="1" lhs="object" type="reset-var" />
+		</init>
+		<request>
+			<info>
+				<field name="post-data" encodingtype="JSON" parsertype="jsonstream"/>
+			</info>  
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="authuser" rhs="authuser" />
+					<match mtype="struct-search-keys" searchkeys="{createSessionRequest{fields[{external{filename}}]}}" field="post-data"/>
+				</and>  
+				<!--  <assign type="value" lhs="temp" rhs="757" />   -->
+				<assign type="struct-get-value" searchkeys="{createSessionRequest{fields[{external{filename}}]}}" lhs="object" field="post-data" />
+				<assign type="value" lhs="object_type" rhs="Video" /> 
+				<assign lhs="user_tmp" order="12" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="13" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>  
+				<trigger name="Upload" >    
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>                  
+					<var name="object"/>
+					<var name="object_type"/>
+					<var name="from_user"/> 
+				</trigger>                   
+			</actions>
+		</request>
+		<!--  <response>
+                <info>
+                    <field name="resp-body" encodingtype="JSON" parsertype="jsonstream"/>
+                </info>      
+            <actions>
+                    <and>
+                        <match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+                        <match mtype="eq" lhsvar="temp" rhs="757" />
+                        <match mtype="struct-search-keys" searchkeys="{sessionStatus{externalFieldTransfers[{putInfo{url}}]}}" field="resp-body" />
+                    </and>
+                <assign order= "1" type="struct-get-value" searchkeys="{sessionStatus{externalFieldTransfers[{putInfo{url}}]}}" lhs="to_object" field="resp-body" />
+                <assign order= "3" type="value" lhs="temp" rhs="0"/>
+                <assign order= "4" type="value" lhs="object" rhs=" " />
+                <trigger order= "2" name="Upload" > 
+                <external>
+                    <action name="send_event"/>
+                </external>				
+                    <var name="object"/>
+                    <var name="object_type"/>
+                    <var name="from_user"/> 
+                </trigger> 
+            </actions>        
+        </response>          -->
+	</resource>   
+
+	<resource name="upload_video_new_traffic" path="/upload/blob/rupio" >
+		<init>
+			<assign order="1" lhs="object" type="reset-var" />
+		</init>
+		<request>
+			<info>
+				<field name="post-data" encodingtype="JSON" parsertype="jsonstream"/>
+			</info>  
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="authuser" rhs="authuser" />
+					<match mtype="struct-search-keys" searchkeys="{createSessionRequest{fields[{external{filename}}]}}" field="post-data"/>
+				</and>  
+				<!-- <assign type="value" lhs="temp" rhs="757" />  --> 
+				<assign type="struct-get-value" searchkeys="{createSessionRequest{fields[{external{filename}}]}}" lhs="object" field="post-data" />
+				<assign type="value" lhs="object_type" rhs="Video" /> 
+				<assign lhs="user_tmp" order="12" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="13" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>  
+				<trigger name="Upload" >    
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>                  
+					<var name="object"/>
+					<var name="object_type"/>
+					<var name="from_user"/> 
+				</trigger>                   
+			</actions>
+		</request>
+		<!--  <response>
+                <info>
+                    <field name="resp-body" encodingtype="JSON" parsertype="jsonstream"/>
+                </info>      
+            <actions>
+                    <and>
+                        <match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+                        <match mtype="eq" lhsvar="temp" rhs="757" />
+                        <match mtype="struct-search-keys" searchkeys="{sessionStatus{externalFieldTransfers[{putInfo{url}}]}}" field="resp-body" />
+                    </and>
+                <assign order= "1" type="struct-get-value" searchkeys="{sessionStatus{externalFieldTransfers[{putInfo{url}}]}}" lhs="to_object" field="resp-body" />
+                <assign order= "3" type="value" lhs="temp" rhs="0"/>
+                <assign order= "4" type="value" lhs="object" rhs=" " />
+                <trigger order= "2" name="Upload" > 
+                <external>
+                    <action name="send_event"/>
+                </external>				
+                    <var name="object"/>
+                    <var name="object_type"/>
+                    <var name="from_user"/> 
+                </trigger> 
+            </actions>        
+        </response>          -->
+	</resource>    	
+
+	<!--     <resource name="upload_video_actual" host="upload\.youtube\.com" >
+        <id>
+            <match mtype="kvp" field="uriparam-key" key="upload_id" rhs="upload_id" />
+        </id>    
+        <request>
+            <actions> 
+                <and>
+                    <match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+                </and>  
+                <assign type="value" lhs="object_type" rhs="Video" /> 
+                <assign type="variable" lhs="object" rhs="tmpobj" />
+                <trigger name="Upload" >    
+                  <external>
+                      <action name="inspect_req" />
+                      <action name="nspolicy" />
+                  </external>                
+                    <var name="object"/>
+                    <var name="object_type"/>
+                    <var name="from_user"/> 
+                </trigger>                
+            </actions>
+        </request>
+    </resource>    -->   
+
+	<!-- Publish a video-->
+	<resource name="publish_video" path="/metadata_ajax" >
+		<request>
+			<actions>
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_edit_video" rhs="action_edit_video" />
+					<match mtype="kvp" field="postdata-key" key="video_id" rhs="video_id" />
+					<match mtype="kvp" field="postdata-key" key="privacy" rhs="public" />
+					<match mtype="strstr" field="referrer" rhs="upload" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1"/> 
+				<assign order= "2" type="key-value" lhs="object_id" field="postdata-key" key="video_id" />
+				<assign type="key-value" lhs="object" field="postdata-key" key="title" order="3"/>
+				<assign type="key-value" lhs="tag" field="postdata-key" key="keywords" order="4" />
+				<assign type="value" lhs="temp" rhs="639" order="5" /> 
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Share" order="8" block-template="youtube_share.block" >    
+					<external>
+						<action name="nspolicy_lookup"/>
+					</external>
+					<var name="object"/>
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="tag"/>
+					<var name="object_id"/>
+					<dict action="update" key="object_id" val="object" />
+				</trigger>
+			</actions>
+			<actions>
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_edit_video" rhs="action_edit_video" />
+					<match mtype="kvp" field="postdata-key" key="video_id" rhs="video_id" />
+					<match mtype="strstr" field="referrer" rhs="edit" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1"/> 
+				<assign order= "2" type="key-value" lhs="object_id" field="postdata-key" key="video_id" />
+				<assign type="key-value" lhs="object" field="postdata-key" key="title" order="3"/>
+				<assign type="key-value" lhs="tag" field="postdata-key" key="keywords" order="4" />
+				<assign type="value" lhs="temp" rhs="539" order="5"/> 
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />
+					<var name="user_tmp" />
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Edit" order="8" >    
+					<external>
+						<action name="nspolicy_lookup"/>
+					</external>                  
+					<var name="object"/>
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="tag"/> 
+					<var name="object_id"/> 
+					<dict action="update" key="object_id" val="object" />
+				</trigger>                
+			</actions>
+		</request>
+		<response>
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="eq" lhsvar="temp" rhs="639" />
+				</and>
+				<assign type="value" lhs="temp" rhs="0"/>
+				<trigger name="Share" > 
+					<external>
+						<action name="send_event"/>
+					</external>				
+					<var name="object"/>
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="tag"/> 
+					<var name="object_id"/> 
+				</trigger>                
+			</actions>
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="eq" lhsvar="temp" rhs="539" />
+				</and>
+				<assign type="value" lhs="temp" rhs="0"/>
+				<trigger name="Edit" > 
+					<external>
+						<action name="send_event"/>
+					</external>				
+					<var name="object"/>
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="tag"/> 
+					<var name="object_id"/> 
+				</trigger>                
+			</actions>            
+		</response>          
+	</resource>      
+	<!-- Delete a video-->
+	<resource name="delete_video" path="/video_ajax" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="num_videos" rhs="num_videos" />
+					<match mtype="kvp" field="uriparam-key" key="action_delete_videos" rhs="action_delete_videos" />
+					<match mtype="kvp" field="postdata-key" key="v" rhs="v" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1" /> 
+				<assign type="key-value" lhs="object_id" field="postdata-key" key="v" order="2" />
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Delete" endprocessing ="y" order="8">
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>				
+					<var name="object"/>
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="object_id"/>
+					<dict action="lookup" key="object_id" val="object" />                             
+				</trigger>                
+			</actions>
+		</request>
+	</resource>      
+
+	<resource name="import_video" path="/video_importer_ajax" >
+		<id>
+			<and>
+				<match mtype="exact-depth" field="uripath" depth="1" />
+				<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+				<match mtype="kvp" field="uriparam-key" key="action_import" rhs="1" />
+			</and>
+		</id>
+		<request>
+			<actions> 
+				<match mtype="kvp" field="postdata-key" key="import_items" rhs="import_items" />
+				<assign type="value" lhs="object_type" rhs="Video" order="1" /> 
+				<assign lhs="user_tmp" order="2" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="3" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Share" block-template="youtube_share.block" order="4">
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>                         
+				</trigger>                
+			</actions>
+		</request>
+	</resource>
+	<!-- Watch a video-->
+	<resource name="watch_video" path="/watch" >
+		<id>			
+			<and>		
+				<match field="uriparam-key" mtype="not-exists" key="spf" />
+				<match field="uriparam-key" mtype="not-exists" key="layout" />
+				<!-- <match field="uriparam-key" mtype="exists" key="spfreload" />      --> 
+				<!-- <match field="uri" keymtype="strlen" mtype="match_notpresent" rhs="3" /> -->				
+			</and>
+
+		</id>
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="get"/>
+					<match mtype="kvp" field="uriparam-key" key="v" rhs="v" />
+				</and>  
+				<assign type="value" lhs="temp" rhs="999" /> 
+				<assign type="key-value" lhs="object_id" field="uriparam-key" key="v" />    
+				<assign type="value" lhs="object_type" rhs="Video" />
+				<!-- <trigger name="View" >
+                    <external>
+                        <action name="nspolicy_lookup"/>
+					  </external>				
+                    <var name="object_type"/>
+                    <var name="from_user"/> 
+                    <var name="object_id"/>
+                </trigger>  --> 				
+			</actions>
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="TEXT" parsertype="stream"/>
+			</info> 
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="999" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" />                      
+				</and>
+				<trigger name="View" order="1">
+					<external>
+						<action name="hold_header_for_inspect" />
+					</external>                
+				</trigger>
+			</actions>    
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="999" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<!-- <key name="&lt;meta name=&quot;title&quot; content=" order="1" /> -->
+						<!-- <key name="&lt;title" order="1" /> -->
+						<key name="&lt;meta property=&quot;og:title&quot; content=" order="1" />  
+					</match>                        
+				</and>
+				<assign type="decode-key-value" lhs="object" startswith="0x22" endswith="0x22" field="resp-body" />
+			</actions> 
+
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="999" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<key name="&lt;meta name=&quot;keywords&quot; content=" order="1" />
+					</match>                        
+				</and>
+				<assign type="decode-key-value" lhs="tag" startswith="0x22" endswith="0x22" field="resp-body" />
+			</actions>    
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<key name="data-name=&quot;watch&quot;" order="1" />
+					</match>                        
+					<match mtype="eq" lhsvar="temp" rhs="999" />
+				</and>
+				<assign type="decode-key-value" lhs="from_object" startswith="0x3e" endswith="0x3c" field="resp-body" />
+
+			</actions> 
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<key name="data-spf-name=&quot;watch&quot;" order="1" />
+					</match>                        
+					<match mtype="eq" lhsvar="temp" rhs="999" />
+				</and>
+			</actions> 
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<!-- <key name="http://www.youtube.com/user" order="1" /> -->
+						<key name="&quot;author&quot;:" order="1" />
+					</match>                        
+					<match mtype="eq" lhsvar="temp" rhs="999" />
+				</and>
+				<!--   <assign type="decode-key-value" lhs="instance_id" startswith="/" endswith="0x22" field="resp-body" /> -->
+				<assign type="decode-key-value" lhs="instance_id" startswith="0x22" endswith="0x22" field="resp-body" order="1"/>
+				<assign type="value" lhs="temp" rhs="0" order="2"/>
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="View" suppress="true" endprocessing="y" order="8"> 
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>					
+					<var name="tag"/>
+					<var name="instance_id"/>    
+					<var name="object" suppression_key="true"/>
+					<var name="object_id"/>
+					<var name="object_type"/>
+					<var name="from_user"/> 
+				</trigger>
+				<assign type="value" lhs="instance_id" rhs=" " order="10" />
+			</actions>     
+		</response>        
+	</resource>  
+	<!-- Watch Video from iOS browser	 -->
+	<!-- 	<resource name="watch_video_ios_browser" path="/watch" >
+		<id>	
+	<and>		
+			<match field="uriparam-key" mtype="not-exists" key="spf" />            
+			<match field="uriparam-key" mtype="exists" key="layout" /> 			
+			
+	</and>			
+		</id>
+        <request>
+            <actions> 
+                <and>
+                    <match mtype="nsdef" field="method" key="httpmethods" rhs="get"/>
+                    <match mtype="kvp" field="uriparam-key" key="v" rhs="v" />
+                </and>  
+                <assign type="value" lhs="temp" rhs="999" /> 
+                <assign type="key-value" lhs="object_id" field="uriparam-key" key="v" />    
+                <assign type="value" lhs="object_type" rhs="Video" />               	
+            </actions>
+		</request>
+        <response>
+            <info>
+                <field name="resp-body" encodingtype="TEXT" parsertype="stream"/>
+            </info> 
+            <actions>
+            <and>
+                <match mtype="eq" lhsvar="temp" rhs="999" />
+                <match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" />                      
+            </and>
+            <trigger name="View" order="1">
+                <external>
+                    <action name="hold_header_for_inspect" />
+                </external>                
+            </trigger>
+			</actions>    
+            <actions>
+                <and>
+                    <match mtype="eq" lhsvar="temp" rhs="999" />
+                    <match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+                    <match mtype="decode-key" field="resp-body" >                       
+                        <key name="&quot;title&quot;&#58;" order="1" />  
+                    </match>                        
+                </and>
+                <assign type="decode-key-value" lhs="object" startswith="0x22" endswith="0x22" field="resp-body" />
+            </actions>           
+            <actions>
+                <and>
+                    <match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+                    <match mtype="decode-key" field="resp-body" >
+						<key name="&quot;author&quot;&#58;" order="1" />
+                    </match>                        
+                    <match mtype="eq" lhsvar="temp" rhs="999" />
+                </and>              
+			        <assign type="decode-key-value" lhs="instance_id" startswith="0x22" endswith="0x22" field="resp-body" />
+                <assign type="value" lhs="temp" rhs="0"/>
+                    <trigger name="View"  > 
+                        <external>
+                            <action name="nspolicy_lookup"/>
+							<action name="send_event"/>
+						</external>	
+                        
+                        <var name="instance_id"/>    
+                        <var name="object" />
+                        <var name="object_id"/>
+                        <var name="object_type"/>
+                        <var name="from_user"/> 
+                    </trigger>					
+            </actions>     
+        </response>        
+    </resource>  -->
+
+
+	<resource name="watch_video_ios_browser" path="/watch" >
+		<id>	
+			<and>		
+				<match field="uriparam-key" mtype="not-exists" key="spf" />            
+				<match field="uriparam-key" mtype="exists" key="layout" /> 			
+			</and>			
+		</id>
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="get"/>
+					<match mtype="kvp" field="uriparam-key" key="v" rhs="v" />
+				</and>  
+				<assign type="value" lhs="temp" rhs="999" /> 
+				<assign type="key-value" lhs="object_id" field="uriparam-key" key="v" />    
+				<assign type="value" lhs="object_type" rhs="Video" />               	
+			</actions>
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="JSON" parsertype="jsonstream"/>
+			</info> 
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="999" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" />                      
+				</and>
+				<trigger name="View" order="1">
+					<external>
+						<action name="hold_header_for_inspect" />
+					</external>                
+				</trigger>
+			</actions>    
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="999" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="struct-search-keys" searchkeys="{content{video{title}}}" field="resp-body" />                     
+				</and>
+				<assign order= "1" type="struct-get-value" searchkeys="{content{video{title}}}" lhs="object" field="resp-body" />
+			</actions>   
+
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="999" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="struct-search-keys" searchkeys="{content{swfcfg{args{author}}}}" field="resp-body" />                     
+				</and>
+				<assign order= "1" type="struct-get-value" searchkeys="{content{swfcfg{args{author}}}}" lhs="instance_id" field="resp-body" />
+			</actions>   			
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="struct-parsing-done" field="resp-body" />                      
+					<match mtype="eq" lhsvar="temp" rhs="999" />
+				</and>
+				<assign type="value" lhs="temp" rhs="0" order="1"/>
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="View" order="8" > 
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>	
+
+					<var name="instance_id"/>    
+					<var name="object" />
+					<var name="object_id"/>
+					<var name="object_type"/>
+					<var name="from_user"/> 
+				</trigger>
+				<assign lhs="object" rhs=" " type="value" order="9" />
+				<assign lhs="instance_id" rhs=" " type="value" order="10" />
+			</actions>     
+		</response>        
+	</resource>
+
+	<resource name="watch_redirect_video" path="/watch">
+		<id>
+			<and>
+				<match mtype="kvp" field="uriparam-key" key="spf" rhs="navigate" />    
+			</and>			
+		</id>   
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="get"/>
+				</and>  
+				<assign type="value" lhs="temp" rhs="900" order="1" />
+				<assign type="key-value" lhs="object_id" field="uriparam-key" key="v" order="2" />    
+				<assign type="value" lhs="object_type" rhs="Video"  order="3"/> 
+			</actions>
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="JSON" parsertype="jsonstream"/>
+			</info> 
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="900" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" />
+				</and>
+				<trigger name="View" order="1">
+					<external>
+						<action name="hold_header_for_inspect" />
+					</external>                
+				</trigger>
+			</actions>    			
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="eq" lhsvar="temp" rhs="900" />
+					<match mtype="struct-search-keys" searchkeys="[{data{swfcfg{args{author}}}}]" field="resp-body" />
+
+				</and>
+				<assign order= "1" type="struct-get-value" searchkeys="[{data{swfcfg{args{author}}}}]" lhs="instance_id" field="resp-body" />
+				<assign type="value" lhs="temp" rhs="0" order="2"/>
+			</actions>   
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="eq" lhsvar="temp" rhs="900" />
+					<match mtype="struct-search-keys" searchkeys="[{data{swfcfg{args{keywords}}}}]" field="resp-body" />
+
+				</and>
+				<assign order= "1" type="struct-get-value" searchkeys="[{data{swfcfg{args{keywords}}}}]" lhs="tag" field="resp-body" />
+				<assign type="value" lhs="temp" rhs="0" order="2"/>
+			</actions>   			
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="eq" lhsvar="temp" rhs="900" />
+					<match mtype="struct-search-keys" searchkeys="[{data{swfcfg{args{title}}}}]" field="resp-body" />
+
+				</and>
+				<assign order= "1" type="struct-get-value" searchkeys="[{data{swfcfg{args{title}}}}]" lhs="object" field="resp-body" />
+				<assign type="value" lhs="temp" rhs="0" order="2"/>				
+			</actions>  
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="eq" lhsvar="temp" rhs="900" />
+					<match mtype="struct-parsing-done" field="resp-body" />
+
+				</and>
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>					
+				<trigger name="View" suppress="true" order="8">
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>					
+					<var name="instance_id"/>
+					<var name="object_id"/>
+					<var name="object_type"/>
+					<var name="tag"/>
+					<var name="object" suppression_key="true"/>
+					<var name="from_user"/>
+				</trigger>
+				<assign type="value" lhs="temp" rhs="0" order="9"/>
+				<assign type="value" lhs="instance_id" rhs=" " order="10" />
+				<assign type="value" lhs="object" rhs=" " order="11" />
+				<assign type="value" lhs="object_id" rhs=" " order="12" />
+				<assign type="value" lhs="tag" rhs=" " order="13" />
+			</actions>   			   
+		</response>        
+	</resource> 
+
+	<resource name="watch_channel_direct" path="/user/{object}">  
+		<id>			
+			<match field="uriparam-key" mtype="not-exists" key="spf" />
+			<match field="uriparam-key" mtype="exists" key="spfreload" />            
+			<!-- <match field="uri" keymtype="strlen" mtype="match_notpresent" rhs="3" /> -->			
+		</id>
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="get"/>
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video"  order="3"/> 
+			</actions>
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="TEXT" parsertype="stream"/>
+			</info> 
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" />  
+					<match mtype="decode-key" field="resp-body" >
+						<key name="&lt;meta name=&quot;title&quot; content=" order="1" />
+					</match>                        
+				</and>
+				<assign type="decode-key-value" lhs="instance_id" startswith="0x22" endswith="0x22" field="resp-body" />
+			</actions>	 		 
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" />   
+					<match mtype="decode-key" field="resp-body" >
+						<key name="data-video-id=" order="1" />
+					</match>                        
+				</and>
+				<assign type="decode-key-value" lhs="object_id" startswith="0x22" endswith="0x22" field="resp-body" order="1"/>
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="View" endprocessing="y" order="8"> 
+					<external>
+						<action name="nspolicy_lookup"/> 
+						<action name="send_event"/>
+					</external>	
+					<var name="instance_id"/>
+					<var name="object_id"/>
+					<var name="object"/>
+					<var name="object_type"/>
+					<var name="from_user"/> 
+				</trigger>
+				<assign type="value" lhs="instance_id" rhs=" " order="10" />
+			</actions>
+		</response> 
+	</resource>	
+
+	<resource name="watch_channel_redirect" path="/user/{object}">   
+		<id>
+			<match mtype="kvp" field="uriparam-key" key="spf" rhs="navigate" />       
+		</id> 
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="get"/>
+				</and>  
+				<assign type="value" lhs="temp" rhs="997" />  
+				<assign type="value" lhs="object_type" rhs="Video" /> 			
+			</actions>
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="TEXT" parsertype="stream"/>
+			</info> 
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="997" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<key name="data-video-id=" order="1" />
+					</match>  					
+				</and>
+				<assign type="decode-key-value" lhs="object_id" startswith="0x22" endswith="0x5C" field="resp-body" />
+			</actions>
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="997" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<key name="title&#34;&#58;" order="1" />
+					</match>                        
+				</and>
+				<assign type="decode-key-value" lhs="temp3" startswith="0x22" endswith="0x22" field="resp-body" order="1" />
+				<assign lhs="temp4" norm-delim="-" norm-token="norm-lhs" normalize="tokens-normalize" order="6" rhs="temp3" type="variable" />
+				<assign lhs="instance_id" norm-delim=" " norm-token="norm-lhs" normalize="str-tokenize-rev" order="7" rhs="temp4" type="variable" />
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger endprocessing="y" name="View" order="8"> 
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event" />
+					</external>					
+					<var name="instance_id"  />
+					<var name="object_type"/>
+					<var name="object_id"/>
+					<var name="object"/>
+					<var name="from_user"/> 
+				</trigger>
+				<assign type="value" lhs="instance_id" rhs=" " order="10" />
+			</actions>	
+		</response>	
+	</resource>	 	
+
+	<resource name="watch_channel_redirect1" path="/channel">   
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="get"/>
+				</and>  
+				<assign type="value" lhs="temp" rhs="996" />  
+				<assign type="value" lhs="object_type" rhs="Video" /> 			
+			</actions>
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="TEXT" parsertype="stream"/>
+			</info> 
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="996" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<key name="data-video-id=" order="1" />
+					</match>  					
+				</and>
+				<assign type="decode-key-value" lhs="object_id" startswith="0x22" endswith="0x5C" field="resp-body" />
+			</actions>
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="996" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<!-- <key name="&#44;&quot;title&quot;&#58;" order="1" /> -->
+						<key name="&#38;feature=c4-overview&quot;" order="1" />
+					</match>  					
+				</and>
+				<assign type="decode-key-value" lhs="object" startswith="0x3E" endswith="0x3C" field="resp-body" />
+			</actions>
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="996" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<key name="title&#34;&#58;" order="1" />
+					</match>                        
+				</and>
+				<assign type="decode-key-value" lhs="temp3" startswith="0x22" endswith="0x22" field="resp-body" order="1"/>
+				<assign lhs="temp4" norm-delim="-" norm-token="norm-lhs" normalize="tokens-normalize" order="2" rhs="temp3" type="variable"/>
+				<assign lhs="instance_id" norm-delim=" " norm-token="norm-lhs" normalize="str-tokenize-rev" order="3" rhs="temp4" type="variable"/>
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger endprocessing="y" name="View" order="8"> 
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event" />
+					</external>					
+					<var name="instance_id"  />
+					<var name="object_type"/>
+					<var name="object_id"/>
+					<var name="from_user"/> 
+				</trigger>
+				<assign type="value" lhs="instance_id" rhs=" " order="10" />
+			</actions>	
+		</response>	
+	</resource>	 	 
+
+	<!-- <resource name="watch_video1" >
+    <id>
+        <and>
+            <match mtype="kvp" field="uriparam-key" key="spf" rhs="spf" />
+             <match mtype="strstr" field="uripath" rhs="watch" />
+        </and>  
+    </id>    
+        <request>
+            <actions> 
+                <and>
+                    <match mtype="nsdef" field="method" key="httpmethods" rhs="get"/>
+                </and>  
+                <assign type="value" lhs="temp" rhs="478" /> 
+                <assign type="key-value" lhs="object_id" field="uriparam-key" key="v" />    
+                <assign type="value" lhs="object_type" rhs="Video" /> 
+                <trigger name="View"> 
+                        <external>
+							<action name="nspolicy_lookup"/>
+						</external>					
+                        <var name="object_id"/>
+                        <var name="object_type"/>
+                        <var name="from_user"/> 
+                </trigger>				
+            </actions>
+        </request>
+        <response>
+            <info>
+                <field name="resp-body" encodingtype="TEXT" parsertype="stream"/>
+            </info>  
+            <actions>
+                <and>
+                    <match mtype="eq" lhsvar="temp" rhs="478" />
+                    <match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+                    <match mtype="decode-key" field="resp-body" >
+                        <key name="&quot;title&quot;:" order="1" />
+                    </match>                        
+                </and>
+                <assign type="decode-key-value" lhs="object" startswith="0x22" endswith="0x22" field="resp-body" />
+            </actions>       
+            <actions>
+                <and>
+                    <match mtype="eq" lhsvar="temp" rhs="478" />
+                    <match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+                    <match mtype="decode-key" field="resp-body" >
+                        <key name="&quot;keywords&quot;" order="1" />
+                    </match>                        
+                </and>
+                <assign type="decode-key-value" lhs="tag" startswith="0x22" endswith="0x22" field="resp-body" />
+            </actions>    
+            <actions>
+                <and>
+                    <match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+                    <match mtype="decode-key" field="resp-body" >
+                        <key name="data-name=\&quot;watch\&quot;\u003e" order="1" />
+                    </match>                        
+                    <match mtype="eq" lhsvar="temp" rhs="478" />
+                </and>
+                <assign type="decode-key-value" lhs="from_object" endswith="0x5c" field="resp-body" />
+                <assign type="value" lhs="temp" rhs="0"/>
+                    <trigger name="View" endprocessing ="y">
+                        <external>
+							<action name="send_event"/>
+						</external>					
+                        <var name="tag"/>
+                        <var name="object"/>
+                        <var name="from_object"/>
+                        <var name="object_id"/>
+                        <var name="object_type"/>
+                        <var name="from_user"/> 
+                    </trigger>
+            </actions>    
+          
+        </response>        
+    </resource>       -->
+
+	<!-- Subscribe to a channel-->   
+	<resource name="subscribe_channel" path="/subscription_ajax" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_create_subscription_to_channel" rhs="action_create_subscription_to_channel" />
+				</and>  
+				<assign type="value" lhs="temp" rhs="998" order="1" />  
+				<assign type="value" lhs="object_type" rhs="Group" order="2" />
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+				<trigger name="Join" order="8">
+					<external>
+						<action name="nspolicy_lookup"/>
+					</external>					
+					<var name="object_type"/>
+					<var name="from_user"/> 
+				</trigger>				
+			</actions>
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="JSON" parsertype="jsonstream"/>
+			</info>      
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="eq" lhsvar="temp" rhs="998" />
+					<match mtype="struct-search-keys" searchkeys="{response{channel_info{title}}}" field="resp-body" />
+				</and>
+				<assign type="value" lhs="object" rhs=" " />
+				<assign order= "1" type="struct-get-value" searchkeys="{response{channel_info{title}}}" lhs="object" field="resp-body" />
+				<assign type="value" lhs="temp" rhs="0"/>
+				<trigger name="Join" >    
+					<external>
+						<action name="send_event"/>
+					</external>	
+					<var name="object"/>
+					<var name="from_user"/> 
+					<var name="object_type"/>
+				</trigger>
+			</actions>        
+		</response>        
+	</resource>    
+	<!-- Change video title-->
+	<resource name="edit_video" path="/bulk_actions_ajax" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="channel" rhs="channel" />
+					<match mtype="kvp" field="uriparam-key" key="action_enqueue" rhs="action_enqueue" />
+					<match mtype="kvp" field="postdata-key" key="bulk_action_video_ids" rhs="bulk_action_video_ids" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1"/> 
+				<assign type="key-value" lhs="object_id" field="postdata-key" key="bulk_action_video_ids" order="2"/>
+				<assign type="key-value" lhs="object" field="postdata-key" key="title" order="3" />
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Edit" order="8" > 
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>					
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="object"/>
+					<var name="object_id"/>
+				</trigger>                
+			</actions>
+		</request>
+	</resource>       
+	<!-- Add/Edit TAG-->
+	<resource name="edit_tag" path="/labels_ajax" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_update_membership" rhs="action_update_membership" />
+					<match mtype="kvp" field="postdata-key" key="video_ids" rhs="video_ids" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1" /> 
+				<assign type="key-value" lhs="object_id" field="postdata-key" key="video_ids" order="2"/>
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Edit" order="8">   
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="object"/>
+					<var name="object_id"/>
+					<dict action="lookup" key="object_id" val="object" />                             
+				</trigger>                
+			</actions>
+		</request>        
+	</resource>   
+	<!-- Edit Title-->
+	<resource name="edit_title" path="/watch_inlineedit_ajax" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_save_video" rhs="action_save_video" />
+					<match mtype="kvp" field="postdata-key" key="session_token" rhs="session_token" />
+					<match mtype="kvp" field="postdata-key" key="video_id" rhs="video_id" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1" /> 
+				<assign type="key-value" lhs="object_id" field="postdata-key" key="video_id" order="2"/>
+				<assign type="key-value" lhs="to_object" field="postdata-key" key="field_myvideo_title" order="3"/>
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Edit" order="8" >  
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="from_object"/>
+					<var name="to_object"/>
+					<var name="object_id"/>
+					<dict action="lookup" key="object_id" val="from_object" />                             
+				</trigger>     
+				<trigger name="Dummy" >   
+					<var name="to_object"/>
+					<var name="object_id"/>
+					<dict action="update" key="object_id" val="to_object" />                             
+				</trigger>              
+			</actions>
+		</request>        
+	</resource>      
+
+	<!-- Share video to third party-->
+	<resource name="share_third_party" path="/sharing_services" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="get"/>
+					<match mtype="kvp" field="uriparam-key" key="feature" rhs="share" />
+					<match mtype="kvp" field="uriparam-key" key="relative_url" rhs="relative_url" />
+					<match mtype="kvp" field="uriparam-key" key="name" rhs="name" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1" /> 
+				<assign type="key-value" lhs="object_id" field="uriparam-key" key="v" order="2"/>
+				<assign type="key-value" lhs="to_object" field="uriparam-key" key="name" order="3" />
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Share" order="8" block-template="youtube_share.block" > 
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="to_object"/>
+					<var name="object_id"/>
+				</trigger>                
+			</actions>
+		</request>        
+	</resource>      
+
+	<!-- Watch Video ISO-->   
+	<resource name="view_video_ios" path="/plus/v1whitelisted/activities/listYoutubeStream" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="key" rhs="key" />
+				</and>  
+				<assign type="value" lhs="temp" rhs="597" order="1"/>  
+				<assign type="value" lhs="object_type" rhs="Video" order="2" />
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="View" order="8"> 
+					<external>
+						<action name="nspolicy_lookup"/>
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/> 
+				</trigger>  				
+
+			</actions>
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="JSON" parsertype="jsonstream"/>
+			</info>      
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="eq" lhsvar="temp" rhs="597" />
+					<match mtype="struct-search-keys" searchkeys="{items[{object{attachments[{displayName}]}}]}" field="resp-body" />
+				</and>
+				<assign type="value" lhs="object" rhs=" " />
+				<assign order= "1" type="struct-get-value" searchkeys="{items[{object{attachments[{displayName}]}}]}" lhs="object" field="resp-body" />
+				<assign type="value" lhs="temp" rhs="0"/>
+				<trigger name="View" nativeapp-platforms="ios">  
+					<external>
+						<action name="send_event"/>
+					</external>							
+					<var name="object"/>
+					<var name="from_user"/> 
+					<var name="object_type"/>
+				</trigger>
+			</actions>        
+		</response>        
+	</resource>  
+
+	<!-- object can be extracted when ENG-8051 is fixed-->    
+	<!-- <resource name="view_video_ios1" path="/youtubei/.+/player" >
+        <request>
+		    <init>			
+			    <assign order="1" lhs="object_id" type="reset-var" />						
+			    <assign order="2" lhs="object_type" type="reset-var" />	
+				
+		    </init>
+            <actions> 
+                <and>
+                    <match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+                    <match mtype="kvp" field="uriparam-key" key="key" rhs="key" />
+                    <match mtype="kvp" field="uriparam-key" key="id" rhs="id" />
+                    <match mtype="kvp" field="uriparam-key" key="t" rhs="t" />
+                </and>  
+                <assign  order="4" type="value" lhs="temp" rhs="147" /> 
+                <assign order="5" type="key-value" lhs="object_id" field="uriparam-key" key="id"  />    
+                <assign order="6" type="value" lhs="object_type" rhs="Video"  />
+				<assign order="7" lhs="user_tmp"  rhs="from_user" type="value" />
+				<trigger order="8" name="Dummy"  >					
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+                <trigger order="9" name="View" nativeapp-platforms="ios" >  
+                        <external>
+							<action name="nspolicy_lookup"/>
+							
+						</external>							
+                        <var name="object_id"/>
+                        <var name="from_user"/> 
+                        <var name="object_type"/>
+                </trigger>				
+            </actions>
+        </request>
+        <response>
+			<info>
+                <field name="resp-body" encodingtype="PROTOBUF" parsertype="protobuf"/>
+            </info> 
+			<actions>
+                <trigger order="1" name="Dummy">
+                    <external>
+                        <action name="hold_header_for_inspect" />
+                    </external>
+                </trigger>
+            </actions>
+			<actions>
+			   
+		        <match mtype="protobuf-search-keys" searchkeys="[f11[f15]]" field="resp-body" />
+                 <assign order="1" lhs="object" type="reset-var" />					
+		        <assign order="2" type="protobuf-get-value" lhs="object" searchkeys="[f11[f15]]" field="resp-body" />
+		    </actions>
+		
+		    <actions>
+		        <match mtype="protobuf-search-keys" searchkeys="[f9[f4[f1]]]" field="resp-body" /> 
+				<assign order="3" lhs="instance_id" type="reset-var" />		
+		        <assign order="4" type="protobuf-get-value" lhs="tmp_instance_id" searchkeys="[f9[f4[f1]]]" field="resp-body" />
+				<assign order="5" lhs="instance_id" rhs="tmp_instance_id" type="variable" norm-delim="ptk=" norm-token="norm-rhs" normalize="str-tokenize" />
+                <assign order="6" lhsvar="instance_id" rhs="tmp_instance_id" type="variable" norm-delim="&" norm-token="norm-lhs" normalize="tokens-normalize" />
+		    </actions>
+			
+			<actions>
+			<and>
+			     <match mtype="eq" lhsvar="temp" rhs="147" />
+                 <match mtype="protobuf-parsing-done" field="resp-body" />
+			</and>
+                
+				<trigger name="View" nativeapp-platforms="ios">  
+                        <external>
+							<action name="send_event"/>
+							<action name="nspolicy_lookup"/>
+						</external>	
+                        <var name="object"/>
+                        <var name="instance_id"/>						
+                        <var name="object_id"/>
+                        <var name="object_type"/>
+                        <var name="from_user"/> 
+                    </trigger> 
+            </actions> 
+			
+			
+			
+        </response>           
+    </resource> -->      
+	<!-- upload video IPAD-->    
+	<resource name="upload_video_ios" path="/resumable/feeds/api/users/default/uploads" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="put"/>
+					<match mtype="kvp" field="uriparam-key" key="upload_id" rhs="upload_id" />
+				</and>  
+				<assign type="value" lhs="temp" rhs="947" order="1" /> 
+				<assign type="value" lhs="object_type" rhs="Video" order="2" />
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+				<trigger name="Upload" order="8">  
+					<external>
+						<action name="nspolicy_lookup"/>
+					</external>						
+					<var name="object_type"/>
+					<var name="from_user"/> 
+				</trigger>   				
+			</actions>
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="TEXT" parsertype="stream"/>
+			</info>  
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="947" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="created" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<key name="&lt;title" order="1" />
+					</match>                      
+				</and>
+				<assign type="decode-key-value" lhs="object" startswith="&gt;" endswith="&lt;" field="resp-body" />
+			</actions>              
+			<actions>
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="947" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="created" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<key name="/uploads" order="1" />
+					</match>                          
+				</and>
+				<assign type="decode-key-value" lhs="object_id" startswith="0x2F" endswith="0x27" field="resp-body" />
+				<assign type="value" lhs="temp" rhs="0"/>
+				<trigger name="Upload" endprocessing="y" nativeapp-platforms="ios">    
+					<external>
+						<action name="send_event"/>
+					</external>	
+					<var name="object"/>
+					<var name="object_id"/>
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<dict action="update" key="object_id" val="object" />
+				</trigger>                
+			</actions>       
+		</response>        
+	</resource>     
+
+
+	<resource name="comment_video" path="/comment_ajax" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_create" rhs="action_create" />
+					<match mtype="kvp" field="postdata-key" key="content" rhs="content" />
+				</and>  
+				<!-- Commented because object variable accomodates the entire big string, but while normalising tmpObj and tmpObjid is not taking entire string-->
+				<assign order="1" type="value" lhs="object" rhs=" " />
+				<assign order="2" type="key-value" lhs="object" field="postdata-key" key="content" />
+				<assign order="3" lhsvar="object" rhs="object" type="variable" norm-delim="!" norm-token="norm-rhs" normalize="tokens-normalize" />
+				<assign order="4" lhsvar="object" rhs="object" type="variable" norm-delim="&quot;" norm-token="norm-rhs" normalize="tokens-normalize" />
+				<assign order="5" lhsvar="object" rhs="object" type="variable" norm-delim="&quot;" norm-token="norm-rhs" normalize="tokens-normalize" />
+				<!-- <assign order="6" lhsvar="object" rhs="object" type="variable" norm-delim="\" norm-token="norm-lhs" normalize="tokens-normalize" /> -->
+				<!-- <assign order="7" lhsvar="object" rhs="object" type="variable" norm-delim="&quot;" norm-token="norm-rhs" normalize="tokens-normalize" /> -->
+				<assign order="6" type="key-value" lhs="from_object" field="postdata-key" key="video_id" />
+				<assign order="7" type="value" lhs="object_type" rhs="Comment" />   
+				<assign order="8" type="value" lhs="temp" rhs="879" />
+				<assign lhs="user_tmp" order="9" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="10" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+				<trigger order="11" name="Post" >   
+					<external>
+						<action name="nspolicy_lookup"/>
+					</external>						
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>	
+					<var name="from_object"/>
+				</trigger>   				
+			</actions>
+
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_delete" rhs="action_delete" />
+					<match mtype="kvp" field="postdata-key" key="comment_id" rhs="comment_id" />
+				</and>  
+				<!-- Commented because object variable accomodates the entire big string, but while normalising tmpObj and tmpObjid is not taking entire string-->
+				<assign order="1" type="value" lhs="object" rhs=" " />
+				<assign order="2" type="key-value" lhs="object_id" field="postdata-key" key="comment_id" />
+				<assign order="3" type="value" lhs="object_type" rhs="Comment" /> 
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+				<trigger order="8" name="Delete" >   
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>						
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>	
+					<var name="object_id"/>
+					<dict action="lookup" key="object_id" val="object" />                             
+				</trigger>   				
+			</actions>
+
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="TEXT" parsertype="stream"/>
+			</info>  
+			<actions>
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="decode-key" field="resp-body" >
+						<key name="cid" order="1" />
+					</match>                        
+					<match mtype="eq" lhsvar="temp" rhs="879" />
+				</and>
+				<assign type="decode-key-value" lhs="object_id" startswith="0x22" endswith="0x5C" field="resp-body" />
+				<assign type="value" lhs="temp" rhs="0"/>
+				<trigger name="Post" endprocessing="y"> 
+					<external>
+						<action name="send_event"/>
+					</external>					
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>
+					<var name="object_id"/>						
+					<var name="from_object"/> 
+					<dict action="update" key="object_id" val="object" />
+				</trigger>
+			</actions>    
+		</response>    
+	</resource> 
+
+	<!-- Delete IOS video-->
+	<resource name="delete_video_ios" path="/feeds/api/users/default/uploads/{object_id}" >
+		<request>
+			<info>
+				<field name="post-data" encodingtype="TEXT" parsertype="stream"/>
+			</info>        
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="delete"/>
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1"/>
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+				<trigger name="Delete" order="8">
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>				
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="object"/>
+					<var name="object_id"/>
+					<dict action="lookup" key="object_id" val="object" />                             
+				</trigger>                
+			</actions>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="put"/>
+					<match mtype="decode-key" field="post-data">
+						<key name="title.type=" order="1" />
+					</match>                
+				</and>  
+				<assign type="decode-key-value" lhs="to_object" startswith="&gt;" endswith="&lt;" field="resp-body" order="1"/>
+				<assign type="value" lhs="object_type" rhs="Video" order="2" />
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+				<trigger name="Edit" order="8" >  
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="object_id"/>
+					<var name="to_object"/>
+					<var name="from_object"/>
+					<dict action="lookup" key="object_id" val="from_object" />                             
+				</trigger>                
+			</actions>        
+		</request>        
+	</resource>  
+
+	<resource name="reply_comment_video" path="/comment_service_ajax" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_create_comment_reply" rhs="action_create_comment_reply" />
+					<match mtype="kvp" field="postdata-key" key="content" rhs="content" />
+				</and>				
+				<assign order="1" type="value" lhs="object" rhs=" " />
+				<assign order="2" type="key-value" lhs="object" field="postdata-key" key="content" />
+				<assign order="7" type="value" lhs="object_type" rhs="Comment" />   
+				<assign order="8" type="value" lhs="temp" rhs="879" />
+				<assign lhs="user_tmp" order="9" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="10" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+				<trigger order="11" name="Post" >   
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>						
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>	
+				</trigger>   				
+			</actions>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_perform_comment_action" rhs="action_perform_comment_action" />
+					<match mtype="kvp" field="postdata-key" key="session_token" rhs="session_token" />
+				</and>
+				<assign order="1" type="value" lhs="object_type" rhs="Comment" />   
+				<assign lhs="user_tmp" order="2" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="3" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+				<trigger order="4" name="Delete" >
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>		
+					<var name="object_type"/>
+					<var name="from_user"/>
+				</trigger>   				
+			</actions>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_create_comment" rhs="action_create_comment" />
+					<match mtype="kvp" field="postdata-key" key="content" rhs="content" />
+				</and>				
+				<assign order="1" type="value" lhs="object" rhs=" " />
+				<assign order="2" type="key-value" lhs="object" field="postdata-key" key="content" />
+				<assign order="7" type="value" lhs="object_type" rhs="Comment" />   
+				<assign order="8" type="value" lhs="temp" rhs="879" />
+				<assign lhs="user_tmp" order="9" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="10" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+				<trigger order="11" name="Post" >   
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>						
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>	
+				</trigger>   				
+			</actions>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_update_comment" rhs="action_update_comment" />
+					<match mtype="kvp" field="postdata-key" key="content" rhs="content" />
+				</and>				
+				<assign order="1" type="value" lhs="object" rhs=" " />
+				<assign order="2" type="key-value" lhs="object" field="postdata-key" key="content" />
+				<assign order="7" type="value" lhs="object_type" rhs="Comment" />   
+				<assign order="8" type="value" lhs="temp" rhs="879" />
+				<assign lhs="user_tmp" order="9" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="10" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>	
+				<trigger order="11" name="Post" >   
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>						
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>	
+				</trigger>   				
+			</actions>
+		</request>
+	</resource> 
+
+	<resource name="comment_video_uploaded" path="/comment_servlet" >
+		<request>
+			<id>
+				<match mtype="exact-depth" field="uripath" depth="1" />
+			</id>
+
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_add_comment" rhs="action_add_comment" />
+					<match mtype="kvp" field="postdata-key" key="comment" rhs="comment" />
+				</and>				
+				<assign order="1" type="value" lhs="object" rhs=" " />
+				<assign order="2" type="key-value" lhs="object" field="postdata-key" key="comment" />
+				<assign order="7" type="value" lhs="object_type" rhs="Comment" />
+				<assign lhs="user_tmp" order="8" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="9" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger> 				
+				<trigger order="10" name="Post" >   
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>						
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>	
+				</trigger>   				
+			</actions>			
+		</request>
+	</resource> 
+
+	<resource name="share_via_email" path="/share_email_ajax" >
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="kvp" field="uriparam-key" key="action_send_email" rhs="1" />
+					<match mtype="kvp" field="postdata-key" key="recipients" rhs="recipients" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1"/> 
+				<assign type="key-value" lhs="object_id" field="postdata-key" key="video_id" order="2"/>
+				<assign type="key-value" lhs="to_user" field="postdata-key" key="recipients" order="3" />
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Share" order="8" block-template="youtube_share.block"> 
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="to_user"/>
+					<var name="object_id"/>
+				</trigger>                
+			</actions>
+		</request>        
+	</resource> 	
+
+
+	<resource name="download_mp4" path="/download_my_video" >
+		<request>
+			<id>
+				<match mtype="exact-depth" field="uripath" depth="1" />
+			</id>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="get"/>
+					<match mtype="kvp" field="uriparam-key" key="t" rhs="t"/>
+					<match mtype="kvp" field="uriparam-key" key="v" rhs="v" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1" /> 
+				<assign type="key-value" lhs="object_id" field="uriparam-key" key="v" order="2"/>
+				<assign lhs="user_tmp" order="6" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="7" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Download" order="8"> 
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event" />
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object_id" />
+					<var name="object" />
+					<dict action="lookup" key="object_id" val="object" />
+				</trigger>                
+			</actions>
+		</request>
+	</resource> 
+
+	<!-- Coverage for ios device  -->
+	<!-- Comment on a video -->
+	<resource name="comment_on_video_ios" path="/youtubei/.+/{object_type}/create_comment" enable-cibuf="Y" >
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="4" />
+			<match mtype="kvp" field="uriparam-key" key="key" rhs="key"/>
+		</id>
+
+
+		<request>
+
+			<info>
+				<field name="post-data" encodingtype="PROTOBUF" parsertype="protobuf"/>
+			</info>
+			<actions>
+				<trigger order="1" name="Dummy">
+					<external>
+						<action name="hold_header_for_inspect" />
+					</external>
+				</trigger>
+			</actions>
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f3]" field="post-data" /> 
+				<assign order="2" type="protobuf-get-value" lhs="videoComment" searchkeys="[f3]" field="post-data" />			
+			</actions>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>                
+					<match mtype="protobuf-parsing-done" field="post-data" />  
+
+				</and>  
+				<assign order="3" type="value" lhs="temp" rhs="111" />
+				<assign order="4" lhs="user_tmp"  rhs="from_user" type="value" />
+
+				<trigger order="6" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="7" name="Post" > 
+					<external>
+						<action name="inspect_cibuffer_lookup" />					
+						<action name="inspect_cibuffer" />
+						<action name="send_event" />
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/> 
+				</trigger>                
+			</actions>		
+		</request>		
+	</resource> 
+
+
+
+
+
+	<!-- Delete Comment on a video -->
+	<resource name="deleteComment_on_video_ios" path="/plus/v1whitelisted/activities/{object_id}" >
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="4" />
+		</id>
+		<request>
+
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="delete"/>
+				</and> 
+				<assign order="1" type="value" lhs="object_type" rhs="Comment"  /> 
+				<assign order="2" lhs="user_tmp"  rhs="from_user" type="value" />
+				<trigger order="3" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="4" name="Delete" > 
+					<external>
+
+						<action name="nspolicy_lookup"/>
+						<action name="send_event" />
+
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="object_id"/>		
+				</trigger>                
+			</actions>
+		</request>		
+
+	</resource> 
+
+	<!-- Reply to comment -->	
+	<resource name="reply_comment_ios" path="/youtubei/.+/comment/create_comment_reply" enable-cibuf="Y" >
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="4" />
+			<match mtype="kvp" field="uriparam-key" key="key" rhs="key"/>
+		</id>
+
+
+		<request>
+
+			<info>
+				<field name="post-data" encodingtype="PROTOBUF" parsertype="protobuf"/>
+			</info>
+			<actions>
+				<trigger order="1" name="Dummy">
+					<external>
+						<action name="hold_header_for_inspect" />
+					</external>
+				</trigger>
+			</actions>
+
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f3]" field="post-data" /> 
+				<assign order="2" type="protobuf-get-value" lhs="videoComment" searchkeys="[f3]" field="post-data" />
+			</actions>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="protobuf-parsing-done" field="post-data" />   				
+				</and>  
+				<!-- <assign order="3" type="value" lhs="temp" rhs="121" /> -->
+				<assign order="4" type="value" lhs="object_type" rhs="Comment"  /> 
+				<assign order="5" lhs="user_tmp"  rhs="from_user" type="value" />
+
+				<trigger order="6" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="7" name="Post" > 
+					<external>
+						<action name="inspect_cibuffer_lookup" />					
+						<action name="inspect_cibuffer" />
+						<action name="send_event" />
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/> 
+				</trigger>                
+			</actions>
+		</request>
+	</resource> 
+
+	<!-- Delete Reply to comment -->
+
+	<resource name="deleteReply_Comment_ios" path="/plus/v1whitelisted/comments/{object_id}" >
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="4" />
+		</id>
+		<request>
+
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="delete"/>
+				</and> 
+				<assign order="1" type="value" lhs="object_type" rhs="Comment"  /> 
+				<assign order="2" lhs="user_tmp"  rhs="from_user" type="value" />
+				<trigger order="3" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="4" name="Delete" > 
+					<external>
+
+						<action name="nspolicy_lookup"/>
+						<action name="send_event" />
+
+					</external>			
+					<var name="object_type"/>
+					<var name="from_user"/> 
+					<var name="object_id"/>		
+				</trigger>                
+			</actions>
+		</request>
+	</resource> 		
+
+
+	<!-- upload a video -->		
+
+	<resource name="upload_video_ios1" path="/youtubei/.+/video_manager/metadata_update">
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="4" />
+			<match mtype="kvp" field="uriparam-key" key="key" rhs="key"/>
+		</id>
+
+		<init>			
+			<assign order="1" lhs="object_id" type="reset-var" />						
+			<assign order="2" lhs="object" type="reset-var" />		
+		</init>
+
+		<request>
+
+			<info>
+				<field name="post-data" encodingtype="PROTOBUF" parsertype="protobuf"/>
+			</info>
+
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f2]" field="post-data" /> 
+				<assign order="3" type="protobuf-get-value" lhs="object_id" searchkeys="[f2]" field="post-data" />
+			</actions>
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f3[f1]]" field="post-data" /> 
+				<assign order="4" type="protobuf-get-value" lhs="object" searchkeys="[f3[f1]]" field="post-data" />
+			</actions>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>                
+					<match mtype="protobuf-parsing-done" field="post-data" /> 				
+				</and>  
+				<assign order="5" type="value" lhs="object_type" rhs="Video"  /> 
+				<assign order="6" lhs="user_tmp"  rhs="from_user" type="value" />
+
+				<trigger order="7" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="8" name="Edit" > 
+					<external>
+
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+
+					</external>	
+					<var name="object"/>				 
+					<var name="object_type"/>
+					<var name="object_id"/>
+					<var name="from_user"/>
+
+				</trigger>                
+			</actions>		
+		</request>
+	</resource> 	
+
+	<resource name="upload_video_edit_comment" path="/youtubei/.+/comment/update_comment">
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="4" />
+			<match mtype="kvp" field="uriparam-key" key="key" rhs="key"/>
+		</id>
+
+		<init>			
+			<assign order="1" lhs="object_id" type="reset-var" />						
+			<assign order="2" lhs="object" type="reset-var" />		
+		</init>
+
+		<request>
+
+			<info>
+				<field name="post-data" encodingtype="PROTOBUF" parsertype="protobuf"/>
+			</info>
+
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f2]" field="post-data" /> 
+				<assign order="3" type="protobuf-get-value" lhs="object_id" searchkeys="[f2]" field="post-data" />
+			</actions>
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f3[f1]]" field="post-data" /> 
+				<assign order="4" type="protobuf-get-value" lhs="object" searchkeys="[f3[f1]]" field="post-data" />
+			</actions>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>                
+					<match mtype="protobuf-parsing-done" field="post-data" /> 				
+				</and>  
+				<assign order="5" type="value" lhs="object_type" rhs="Comment"  /> 
+				<assign order="6" lhs="user_tmp"  rhs="from_user" type="value" />
+
+				<trigger order="7" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="8" name="Edit" > 
+					<external>
+
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+
+					</external>	
+					<var name="object"/>				 
+					<var name="object_type"/>
+					<var name="object_id"/>
+					<var name="from_user"/>
+
+				</trigger>                
+			</actions>		
+		</request>
+	</resource> 	
+
+	<resource name="upload_video_delete_comment" path="/youtubei/.+/comment/perform_comment_action">
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="4" />
+			<match mtype="kvp" field="uriparam-key" key="key" rhs="key"/>
+		</id>
+
+		<init>			
+			<assign order="1" lhs="object_id" type="reset-var" />						
+			<assign order="2" lhs="object" type="reset-var" />	
+			<assign order="2" lhs="tmp" type="reset-var" />				
+		</init>
+
+		<request>
+			<actions> 
+				<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>  
+				<assign order="1" type="value" lhs="object_type" rhs="Comment"  /> 
+				<assign order="2" lhs="user_tmp"  rhs="from_user" type="value" />
+				<assign lhs="tmp" order="3" rhs="43211" type="value" />
+				<trigger order="4" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="5" name="Delete" > 
+					<external>
+						<action name="nspolicy_lookup"/>						
+					</external>	
+					<var name="object"/>				 
+					<var name="object_type"/>
+					<var name="object_id"/>
+					<var name="from_user"/>
+
+				</trigger>                
+			</actions>		
+		</request>
+		<response>
+			<actions>
+				<and>
+					<match field="status" key="http_statuscode" mtype="nsdef" rhs="forbidden" />
+					<match lhsvar="tmp" mtype="eq" rhs="43211" />
+				</and>
+				<trigger order="4" name="Delete" >
+					<external>
+						<action name="send_event"/>
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>
+				</trigger>
+			</actions>
+		</response>
+	</resource> 	
+
+
+	<resource name="upload_video_android" path="/upload/youtubei">
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="2" />
+			<match mtype="strstr" field="host" rhs="upload"/>
+		</id>
+		<request>
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>                			
+				</and>  
+				<assign order="1" type="value" lhs="object_type" rhs="Video"  /> 
+				<assign order="2" lhs="user_tmp"  rhs="from_user" type="value" />
+				<trigger order="3" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="4" name="Upload" suppress="true" > 
+					<external>
+						<action name="nspolicy_lookup"/>
+					</external>				 
+					<var name="object_type"/>
+					<var name="from_user"/>
+				</trigger>
+				<assign lhs="tmp" order="6" rhs="4321" type="value" />
+			</actions>		
+		</request>
+		<response>
+			<actions>
+				<and>
+					<match field="status" key="http_statuscode" mtype="nsdef" rhs="forbidden" />
+					<match lhsvar="tmp" mtype="eq" rhs="4321" />
+				</and>
+				<trigger order="4" name="Upload" >
+					<external>
+						<action name="send_event"/>
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>
+				</trigger>
+			</actions>
+		</response>
+	</resource> 	
+
+	<!-- delete a video -->
+	<resource name="delete_video_ios1" path="/youtubei/.+/video/delete">
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="4" />
+			<match mtype="kvp" field="uriparam-key" key="key" rhs="key"/>
+		</id>
+
+		<init>			
+			<assign order="1" lhs="object_id" type="reset-var" />
+			<assign order="2" lhs="object_type" type="reset-var" />			
+		</init>
+
+		<request>
+
+			<info>
+				<field name="post-data" encodingtype="PROTOBUF" parsertype="protobuf"/>
+			</info>
+
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f2]" field="post-data" /> 
+				<assign order="1" type="protobuf-get-value" lhs="object_id" searchkeys="[f2]" field="post-data" />
+			</actions>
+
+			<actions> 
+				<and>
+					<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+					<match mtype="protobuf-parsing-done" field="post-data" />  	
+				</and>  
+				<assign order="3" type="value" lhs="object_type" rhs="Video"  /> 
+				<assign order="4" lhs="user_tmp"  rhs="from_user" type="value" />
+
+				<trigger order="5" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="6" name="Delete" > 
+					<external>
+
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+
+					</external>	
+
+					<var name="object_type"/>
+					<var name="object_id"/>
+					<var name="from_user"/> 
+				</trigger>                
+			</actions>
+
+
+		</request>
+	</resource> 
+
+	<!-- Save video offline -->
+
+
+	<resource name="save_video_offline_ios" path="/youtubei/.+/offline">
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="3" />
+		</id>
+
+
+		<response>
+
+			<info>
+				<field name="resp-body" encodingtype="PROTOBUF" parsertype="protobuf"/>
+			</info>
+
+			<actions>
+				<trigger order="1" name="Dummy">
+					<external>
+						<action name="hold_header_for_inspect" />
+					</external>
+				</trigger>
+			</actions>
+
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f2[f75074928[f1]]]" field="resp-body" /> 
+				<assign order="1" lhs="object_id" type="reset-var" />	
+				<assign order="2" type="protobuf-get-value" lhs="object_id" searchkeys="[f2[f75074928[f1]]]" field="resp-body" />
+			</actions>
+
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f2[f75074928[f4]]]" field="resp-body" /> 
+				<assign order="3" lhs="object" type="reset-var" />	
+				<assign order="4" type="protobuf-get-value" lhs="object" searchkeys="[f2[f75074928[f4]]]" field="resp-body" />
+			</actions>
+
+			<actions> 
+				<and>
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" />  
+					<match mtype="protobuf-parsing-done" field="resp-body" /> 
+				</and>  
+				<assign order="5" type="value" lhs="object_type" rhs="Video"  /> 
+				<assign order="6" lhs="user_tmp"  rhs="from_user" type="value" />
+
+				<trigger order="7" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="8" name="Download" > 
+					<external>
+
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+
+					</external>	
+					<var name="object"/>				 
+					<var name="object_type"/>
+					<var name="object_id"/>
+					<var name="from_user"/> 
+				</trigger>                
+			</actions>
+
+
+		</response>
+	</resource>
+
+	<!-- watch video ios new -->
+
+
+	<resource name="watch_video_ios" path="/youtubei/.+/next">
+		<id>
+			<match mtype="exact-depth" field="uripath" depth="3" />
+			<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+		</id>
+		<request>
+			<actions> 
+				<assign order="1" type="value" lhs="temp" rhs="299" />                
+			</actions>
+		</request>  
+
+		<response>
+
+			<info>
+				<field name="resp-body" encodingtype="PROTOBUF" parsertype="protobuf"/>
+			</info>
+
+			<actions>
+				<trigger order="1" name="Dummy">
+					<external>
+						<action name="hold_header_for_inspect" />
+					</external>
+				</trigger>
+			</actions>
+
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f9[f48687757[f1]]]" field="resp-body" /> 
+				<assign order="1" lhs="object_id" type="reset-var" />	
+				<assign order="2" type="protobuf-get-value" lhs="object_id" searchkeys="[f9[f48687757[f1]]]" field="resp-body" />
+			</actions>
+
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f7[f51779735[f4[f61479009[f1[f1[f1]]]]]]]" field="resp-body" /> 
+				<assign order="3" lhs="object" type="reset-var" />	
+				<assign order="4" type="protobuf-get-value" lhs="object" searchkeys="[f7[f51779735[f4[f61479009[f1[f1[f1]]]]]]]" field="resp-body" />
+			</actions>
+
+			<actions>
+				<match mtype="protobuf-search-keys" searchkeys="[f7[f51779735[f4[f61479009[f4[f1[f1]]]]]]]" field="resp-body" /> 
+				<assign order="5" lhs="instance_id" type="reset-var" />	
+				<assign order="6" type="protobuf-get-value" lhs="instance_id" searchkeys="[f7[f51779735[f4[f61479009[f4[f1[f1]]]]]]]" field="resp-body" />
+			</actions>
+
+			<actions> 
+				<and>
+					<match mtype="eq" lhsvar="temp" rhs="299" />
+
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" />  
+					<match mtype="protobuf-parsing-done" field="resp-body" /> 
+				</and>  
+				<assign order="7" lhs="temp" type="reset-var" />	
+				<assign order="8" type="value" lhs="object_type" rhs="Video"  /> 
+				<assign order="9" lhs="user_tmp"  rhs="from_user" type="value" />
+
+				<trigger order="10" name="Dummy" >
+					<var name="from_user" />  
+					<var name="user_tmp" />  
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="11" name="View" > 
+					<external>
+
+						<action name="nspolicy_lookup"/>
+						<action name="send_event"/>
+
+					</external>	
+					<var name="object"/>				 
+					<var name="object_type"/>
+					<var name="object_id"/>
+					<var name="instance_id"/>
+					<var name="from_user"/> 
+				</trigger>                
+			</actions>
+
+
+		</response>
+	</resource>
+
+	<resource name="Edit video iOS" path="/manage_videos">
+		<id>
+			<and>
+				<match mtype="exact-depth" field="uripath" depth="1" />
+				<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+			</and>
+		</id>
+		<init>			
+			<assign order="1" lhs="object_id" type="reset-var" />
+			<assign order="2" lhs="object_type" type="reset-var" />			
+		</init>
+		<request>
+			<actions> 
+				<and>
+					<match mtype="kvp" field="uriparam-key" key="action_save" rhs="1"/>
+					<match mtype="kvp" field="postdata-key" key="session_token" rhs="session_token" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1"/> 
+				<assign order= "2" type="key-value" lhs="object_id" field="postdata-key" key="v" />
+				<assign type="key-value" lhs="object" field="postdata-key" key="field_myvideo_title" order="3"/>
+				<assign type="key-value" lhs="tag" field="postdata-key" key="field_myvideo_keywords" order="4" />
+				<assign lhs="user_tmp" order="5" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="6" >
+					<var name="from_user" />
+					<var name="user_tmp" /> 
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Edit" order="7" >
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event" />
+					</external>
+					<var name="object"/>
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="tag"/>
+					<var name="object_id"/>
+					<dict action="update" key="object_id" val="object" />
+				</trigger>
+			</actions>
+			<actions> 
+				<and>
+					<match mtype="kvp" field="uriparam-key" key="action_delete" rhs="1"/>
+					<match mtype="kvp" field="postdata-key" key="session_token" rhs="session_token" />
+				</and>  
+				<assign type="value" lhs="object_type" rhs="Video" order="1"/> 
+				<assign order= "2" type="key-value" lhs="object_id" field="postdata-key" key="v" />
+				<assign lhs="user_tmp" order="3" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="4" >
+					<var name="from_user" />
+					<var name="user_tmp" /> 
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger name="Delete" order="5" >
+					<external>
+						<action name="nspolicy_lookup"/>
+						<action name="send_event" />
+					</external>
+					<var name="object"/>
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object_id"/>
+					<dict action="lookup" key="object_id" val="object" />
+				</trigger>
+			</actions>
+		</request>
+	</resource> 
+
+	<resource name="comment_video_activities" path="/service_ajax" >
+		<id>
+			<and>
+				<match mtype="exact-depth" field="uripath" depth="1" />
+				<match mtype="nsdef" field="method" key="httpmethods" rhs="post"/>
+			</and>
+		</id>
+		<init>			
+			<assign order="1" lhs="object_id" type="reset-var" />
+			<assign order="2" lhs="object_type" type="reset-var" />
+			<assign order="3" lhs="from_object" type="reset-var" />
+			<assign order="4" lhs="temp" type="reset-var" />
+		</init>
+		<request>
+			<actions>
+				<match mtype="kvp" field="uriparam-key" key="name" rhs="createCommentEndpoint" />
+				<assign order="1" type="key-value" lhs="object" field="postdata-key" key="comment_text" />
+				<assign order="2" type="value" lhs="object_type" rhs="Comment" />
+				<assign order="3" type="value" lhs="temp" rhs="2558" />
+				<assign lhs="user_tmp" order="4" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="5" >
+					<var name="from_user" />
+					<var name="user_tmp" />
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="6" name="Post" >
+					<external>
+						<action name="nspolicy_lookup"/>
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>
+				</trigger>   				
+			</actions>
+			<actions>
+				<match mtype="kvp" field="uriparam-key" key="name" rhs="createCommentReplyEndpoint" />
+				<assign order="1" type="key-value" lhs="object" field="postdata-key" key="comment_text" />
+				<assign order="2" type="value" lhs="object_type" rhs="Comment" />
+				<assign order="3" type="value" lhs="temp" rhs="2558" />				
+				<assign lhs="user_tmp" order="4" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="5" >
+					<var name="from_user" />
+					<var name="user_tmp" />
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="6" name="Post" >
+					<external>
+						<action name="nspolicy_lookup"/>							
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>
+				</trigger>   				
+			</actions>
+			<actions>
+				<match mtype="kvp" field="uriparam-key" key="name" rhs="updateCommentEndpoint" />
+				<assign order="1" type="key-value" lhs="object" field="postdata-key" key="comment_text" />
+				<assign order="2" type="value" lhs="object_type" rhs="Comment" />
+				<assign order="3" type="value" lhs="temp" rhs="2581" />
+				<assign lhs="user_tmp" order="4" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="5" >
+					<var name="from_user" />
+					<var name="user_tmp" />
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="6" name="Edit" >
+					<external>
+						<action name="nspolicy_lookup"/>
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>
+				</trigger>   				
+			</actions>	
+			<actions>
+				<match mtype="kvp" field="uriparam-key" key="name" rhs="updateCommentReplyEndpoint" />
+				<assign order="1" type="key-value" lhs="object" field="postdata-key" key="comment_text" />
+				<assign order="2" type="value" lhs="object_type" rhs="Comment" />
+				<assign order="3" type="value" lhs="temp" rhs="2581" />				
+				<assign lhs="user_tmp" order="4" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="5" >
+					<var name="from_user" />
+					<var name="user_tmp" />
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="6" name="Edit" >
+					<external>
+						<action name="nspolicy_lookup"/>							
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>
+				</trigger>   				
+			</actions>	
+			<actions>
+				<match mtype="kvp" field="uriparam-key" key="name" rhs="performCommentActionEndpoint" />
+				<!--   <assign order="1" type="key-value" lhs="object" field="postdata-key" key="comment_text" /> -->
+				<assign order="2" type="value" lhs="object_type" rhs="Comment" />
+				<assign order="3" type="value" lhs="temp" rhs="2582" />
+				<assign lhs="user_tmp" order="4" rhs="from_user" type="value" />
+				<trigger name="Dummy" order="5" >
+					<var name="from_user" />
+					<var name="user_tmp" />
+					<dict action="lookup" dbtype="app-session-persist-db" key="user_tmp" val="from_user" />
+				</trigger>
+				<trigger order="6" name="Delete" >
+					<external>
+						<action name="nspolicy_lookup"/>							
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<!-- <var name="object"/> -->
+				</trigger>   				
+			</actions>						
+		</request>
+		<response>
+			<info>
+				<field name="resp-body" encodingtype="JSON" parsertype="jsonstream"/>
+			</info>
+			<actions>
+				<match field="resp-body" mtype="struct-search-keys" searchkeys="{data{actions[{createCommentAction{{commentThreadRenderer{comment{commentRenderer{publishedTimeText{[{navigationEndpoint{watchEndpoint{videoId}}}]}}}}}}}]}}" />
+				<assign field="resp-body" lhs="object_id" order="1" searchkeys="{data{actions[{createCommentAction{{commentThreadRenderer{comment{commentRenderer{publishedTimeText{[{navigationEndpoint{watchEndpoint{videoId}}}]}}}}}}}]}}" type="struct-get-value" />
+			</actions>
+			<actions>
+				<match field="resp-body" mtype="struct-search-keys" searchkeys="{data{actions[{updateCommentAction{{commentRenderer{publishedTimeText{[{navigationEndpoint{watchEndpoint{videoId}}}]}}}}}]}}" />
+				<assign field="resp-body" lhs="object_id" order="1" searchkeys="{data{actions[{updateCommentAction{{commentRenderer{publishedTimeText{[{navigationEndpoint{watchEndpoint{videoId}}}]}}}}}]}}" type="struct-get-value" />
+			</actions>
+			<actions>
+				<match field="resp-body" mtype="struct-search-keys" searchkeys="{data{actions[{createCommentAction{{commentThreadRenderer{commentTargetTitle{simpleText}}}}}]}}" />
+				<assign field="resp-body" lhs="from_object" order="1" searchkeys="{data{actions[{createCommentAction{{commentThreadRenderer{commentTargetTitle{simpleText}}}}}]}}" type="struct-get-value" />
+			</actions>
+			<actions>
+				<and>
+					<match lhsvar="temp" mtype="eq" rhs="2558" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="struct-parsing-done" field="resp-body"/>
+				</and>
+				<assign type="value" lhs="temp" rhs="0"/>
+				<trigger name="Post" endprocessing="y"> 
+					<external>
+						<action name="send_event"/>
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>
+					<var name="object_id"/>	
+					<var name="from_object"/>
+					<dict action="update" key="object_id" val="from_object" />
+				</trigger>
+			</actions>
+			<actions>
+				<and>
+					<match lhsvar="temp" mtype="eq" rhs="2581" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="struct-parsing-done" field="resp-body"/>
+				</and>
+				<assign type="value" lhs="temp" rhs="0"/>
+				<trigger name="Edit" endprocessing="y"> 
+					<external>
+						<action name="send_event"/>
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>
+					<var name="object"/>
+					<var name="object_id"/>	
+					<var name="from_object"/>
+					<dict action="lookup" key="object_id" val="from_object" />
+				</trigger>
+			</actions>
+			<actions>
+				<and>
+					<match lhsvar="temp" mtype="eq" rhs="2582" />
+					<match mtype="nsdef"  field="status" key="http_statuscode" rhs="ok" /> 
+					<match mtype="struct-parsing-done" field="resp-body"/>
+				</and>
+				<assign type="value" lhs="temp" rhs="0"/>
+				<trigger name="Delete" endprocessing="y"> 
+					<external>
+						<action name="send_event"/>
+					</external>
+					<var name="object_type"/>
+					<var name="from_user"/>
+				</trigger>
+			</actions>
+		</response>    
+	</resource>    
+</app>
